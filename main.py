@@ -269,9 +269,11 @@ def main(speech, mode):
         }]
     )
     print("***DESIGN SPECIFICATION***")
+    st.write("***DESIGN SPECIFICATION***")
     st.write(response['message']['content'])
     print(response['message']['content'])
     print("***END OF DESIGN SPECIFICATION***")
+    st.write("***END OF DESIGN SPECIFICATION***")
     prompt = ("Here you are given the detailed idea for a product. Take this idea and make it into a sentance, detailing "
               "all of the measurements for all the parts which would go into making this. Go through the part and specifiy "
               "how large and the shape each part would need to be. Specifiy this in great detail and only respond with the "
@@ -287,10 +289,13 @@ def main(speech, mode):
             'content': prompt
         }]
     )
+    st.write("-----------------------------------")
     print("***PRODUCT MEASUREMENTS***")
+    st.write("***PRODUCT MEASUREMENTS***")
     st.write(response['message']['content'])
     print(response['message']['content'])
     print("***END OF PRODUCT MEASUREMENTS***")
+    st.write("***END OF PRODUCT MEASUREMENTS***")
 
     prompt = ("Your goal is to take these measurements and seperate them into different parts of the product. You are to"
               " take each part of the assembly and assort them in the following manner. These must be outputted as a list"
@@ -305,17 +310,22 @@ def main(speech, mode):
             'content': prompt + str(response['message']['content'])
         }]
     )
+    st.write("-----------------------------------")
     print("***PARTS LIST***")
+    st.write("***PARTS LIST***")
     st.write(response['message']['content'])
     print(response['message']['content'])
     response = list(response['message']['content'].split("\n"))
     print("***END OF PARTS LIST***")
-
+    st.write("***END OF PARTS LIST***")
+    st.write("-----------------------------------")
     print("***CAD DESIGN***")
+    st.write("***CAD DESIGN***")
     for i in range(len(response)):
         st.write("Designing CAD Part " + str(i+1) + ": " + response[i])
         print("Designing CAD Part " + str(i+1) + ": " + response[i])
     print("***END OF CAD DESIGN***")
+    st.write("***END OF CAD DESIGN***")
 
 def streamChat():
 
