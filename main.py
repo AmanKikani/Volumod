@@ -243,10 +243,10 @@ def speech_to_text():
         return f"Could not request results from Google Speech Recognition service; {e}"
 
 
-def main():
+def main(speech, mode):
     # Accesses the speech module
-    # speech = speech_to_text()
-    speech = "Bottle opener"
+    if mode == "speech":
+        speech = speech_to_text()
     print(speech)
 
     # Engineering prompt
@@ -355,9 +355,10 @@ def streamChat():
     prompt = st.chat_input("Hello! How can I assist you today?")
     if prompt != None:
         st.write("You: ", prompt)
+        main(prompt, 0)
 
-    if st.button("Submit"):
-        main()
+    if st.button("Voice activation mode"):
+        main("", "speech")
 
 
 if __name__ == '__main__':
