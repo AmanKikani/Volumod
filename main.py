@@ -1,3 +1,5 @@
+from pdb import post_mortem
+
 import ollama
 import speech_recognition as sr
 import time
@@ -170,6 +172,17 @@ particles_js = """<!DOCTYPE html>
 
 st.set_page_config(page_title="Volumod.net", page_icon="🔊", layout="wide")
 
+
+def callama(prompt):
+    response = ollama.chat(
+        model='llama3.1:8b',
+        messages=[{
+            'role': 'user',
+            'content': prompt
+        }]
+    )
+    return response['message']['content']
+
 def createCad(prompt,i):
     # Create our client.
     client = Client(token="api-6bf6766f-4756-43cf-adee-3c6007f9ffee")
@@ -221,8 +234,8 @@ def createCad(prompt,i):
             print(f"  * {name}")
 
         # Save the STEP data as text-to-cad-output.step
-        final_result = result.outputs[f"source{i}.step"]
-        with open("text-to-cad-output.step", "w", encoding="utf-8") as output_file:
+        final_result = result.outputs[f"source.step"]
+        with open(f"text-to-cad-output{i}.step", "w", encoding="utf-8") as output_file:
             output_file.write(final_result.decode("utf-8"))
             print(f"Saved output to {output_file.name}")
 
@@ -260,18 +273,12 @@ def main(speech, mode):
               " OF EACH ASPECT OF THE PART ONLY: ")
 
     # Calls the local ollama chatbot
-    response = ollama.chat(
-        model='llama3.1:8b',
-        messages=[{
-            'role': 'user',
-            # Appends the engineering prompt to the speech
-            'content':  prompt + speech
-        }]
-    )
+    response = callama(prompt + speech)
+
     print("***DESIGN SPECIFICATION***")
     st.write("***DESIGN SPECIFICATION***")
-    st.write(response['message']['content'])
-    print(response['message']['content'])
+    st.write(response)
+    print(response)
     print("***END OF DESIGN SPECIFICATION***")
     st.write("***END OF DESIGN SPECIFICATION***")
     prompt = ("Here you are given the detailed idea for a product. Take this idea and make it into a sentance, detailing "
@@ -281,19 +288,13 @@ def main(speech, mode):
               " size, and all other measurements it has. Finally, describe how to build this Cad model in an iterative way."
               " i.e. I want you to build the product from the base up, iterating each new addition from where it is in relation"
               " to the foundation of the product or another specific part. Do not add in any extra formatting and only "
-              "have the response be in a measurement based approach. Here is the design specifcation for the product: ")  + str(response['message']['content'])
-    response = ollama.chat(
-        model='llama3.1:8b',
-        messages=[{
-            'role': 'user',
-            'content': prompt
-        }]
-    )
+              "have the response be in a measurement based approach. Here is the design specifcation for the product: ")  + str(response)
+    response = callama(prompt)
     st.write("-----------------------------------")
     print("***PRODUCT MEASUREMENTS***")
     st.write("***PRODUCT MEASUREMENTS***")
-    st.write(response['message']['content'])
-    print(response['message']['content'])
+    st.write(response)
+    print(response)
     print("***END OF PRODUCT MEASUREMENTS***")
     st.write("***END OF PRODUCT MEASUREMENTS***")
 
@@ -303,19 +304,14 @@ def main(speech, mode):
               "NOT FORMAT THE OUTPUT IN ANY OTHER FASHION THAT THE ONE ASKED FOR. DO NOT INCLUDE ANY GREETINGS OR GOODBYES. "
               "ONLY INCLUDE THE ARRAY FORMATTING. Here are the measurements for the product: ")
 
-    response = ollama.chat(
-        model='llama3.1:8b',
-        messages=[{
-            'role': 'user',
-            'content': prompt + str(response['message']['content'])
-        }]
-    )
+    response = callama(prompt + str(response))
+
     st.write("-----------------------------------")
     print("***PARTS LIST***")
     st.write("***PARTS LIST***")
-    st.write(response['message']['content'])
-    print(response['message']['content'])
-    response = list(response['message']['content'].split("\n"))
+    st.write(response)
+    print(response)
+    response = list(response.split("\n"))
     print("***END OF PARTS LIST***")
     st.write("***END OF PARTS LIST***")
     st.write("-----------------------------------")
@@ -324,6 +320,9 @@ def main(speech, mode):
     for i in range(len(response)):
         st.write("Designing CAD Part " + str(i+1) + ": " + response[i])
         print("Designing CAD Part " + str(i+1) + ": " + response[i])
+        createCad(response[i],i+1)
+        print("CAD Part " + str(i+1) + " has been created")
+        st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".step")
     print("***END OF CAD DESIGN***")
     st.write("***END OF CAD DESIGN***")
 
@@ -369,6 +368,8 @@ def streamChat():
 
     if st.button("Voice activation mode"):
         main("", "speech")
+
+
 
 
 if __name__ == '__main__':
