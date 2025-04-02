@@ -320,7 +320,7 @@ def main():
 def streamChat():
 
     st.title("Welcome to Volumod.net")
-    components.html(particles_js, height=700, scrolling=False)
+    components.html(particles_js, height=400, scrolling=False)
     st.sidebar.caption(
         "Built by Aman Kikani. Connect with me on [LinkedIn](https://www.linkedin.com/in/aman-kikani-466716269/)."
     )
