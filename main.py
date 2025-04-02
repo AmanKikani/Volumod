@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
     prompt = ("Your goal is to take these measurements and seperate them into different parts of the product. You are to"
               " take each part of the assembly and assort them in the following manner. These must be outputted as a list"
-              " which looks like the following [Product Part 1: Measurements], [Product Part 2: Measurements}, [...]. DO"
+              " which looks like the following [Product Part 1: Shape, Measurements numbers], [Product Part 2: Shape, Measurements numbers}, [...]. DO"
               "NOT FORMAT THE OUTPUT IN ANY OTHER FASHION THAT THE ONE ASKED FOR. DO NOT INCLUDE ANY GREETINGS OR GOODBYES. "
               "ONLY INCLUDE THE ARRAY FORMATTING. Here are the measurements for the product: ")
 
@@ -155,5 +155,5 @@ if __name__ == "__main__":
 
     print("***CAD DESIGN***")
     for i in range(len(response)):
-        print("Part " + str(i+1) + ": " + response[i])
+        print("Designing CAD Part " + str(i+1) + ": " + response[i])
     print("***END OF CAD DESIGN***")
