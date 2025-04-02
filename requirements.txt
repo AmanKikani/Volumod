@@ -3,4 +3,3 @@ streamlit
 SpeechRecognition
 speechrecognition
 kittycad
-pyaudio

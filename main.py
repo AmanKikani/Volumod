@@ -1,7 +1,6 @@
 import ollama
 import speech_recognition as sr
 import time
-import pyaudio
 import streamlit as st
 from kittycad.api.ml import create_text_to_cad, get_text_to_cad_model_for_user
 from kittycad.client import Client
