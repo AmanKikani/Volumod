@@ -165,5 +165,4 @@ def streamChat():
     if st.button("Start"):
         main()
 
-if name == '__main__':
-    streamChat()
+streamChat()
