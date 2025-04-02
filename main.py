@@ -2,7 +2,7 @@ import ollama
 import speech_recognition as sr
 import time
 import pyaudio
-
+import streamlit as st
 from kittycad.api.ml import create_text_to_cad, get_text_to_cad_model_for_user
 from kittycad.client import Client
 from kittycad.models import (
@@ -87,8 +87,7 @@ def speech_to_text():
         return f"Could not request results from Google Speech Recognition service; {e}"
 
 
-
-if __name__ == "__main__":
+def main():
     # Accesses the speech module
     # speech = speech_to_text()
     speech = "Bottle opener"
@@ -114,6 +113,7 @@ if __name__ == "__main__":
         }]
     )
     print("***DESIGN SPECIFICATION***")
+    st.write(response['message']['content'])
     print(response['message']['content'])
     print("***END OF DESIGN SPECIFICATION***")
     prompt = ("Here you are given the detailed idea for a product. Take this idea and make it into a sentance, detailing "
@@ -132,12 +132,13 @@ if __name__ == "__main__":
         }]
     )
     print("***PRODUCT MEASUREMENTS***")
+    st.write(response['message']['content'])
     print(response['message']['content'])
     print("***END OF PRODUCT MEASUREMENTS***")
 
     prompt = ("Your goal is to take these measurements and seperate them into different parts of the product. You are to"
               " take each part of the assembly and assort them in the following manner. These must be outputted as a list"
-              " which looks like the following [Product Part 1: Shape, Measurements numbers], [Product Part 2: Shape, Measurements numbers}, [...]. DO"
+              " which looks like the following [Product Part 1: Shape, x length {unit}, x width {unit}...], [Product Part 2: Shape, x length {unit}, x width {unit}...], [...]. DO"
               "NOT FORMAT THE OUTPUT IN ANY OTHER FASHION THAT THE ONE ASKED FOR. DO NOT INCLUDE ANY GREETINGS OR GOODBYES. "
               "ONLY INCLUDE THE ARRAY FORMATTING. Here are the measurements for the product: ")
 
@@ -149,11 +150,21 @@ if __name__ == "__main__":
         }]
     )
     print("***PARTS LIST***")
+    st.write(response['message']['content'])
     print(response['message']['content'])
     response = list(response['message']['content'].split("\n"))
     print("***END OF PARTS LIST***")
 
     print("***CAD DESIGN***")
     for i in range(len(response)):
+        st.write("Designing CAD Part " + str(i+1) + ": " + response[i])
         print("Designing CAD Part " + str(i+1) + ": " + response[i])
     print("***END OF CAD DESIGN***")
+
+def streamChat():
+    st.title("Conversation CAD builder")
+    if st.button("Start"):
+        main()
+
+if name == '__main__':
+    streamChat()
