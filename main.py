@@ -329,6 +329,7 @@ def main(speech, mode):
         st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".stl")
     print("***END OF CAD DESIGN***")
     st.write("***END OF CAD DESIGN***")
+    # Add in a function call here in the future
     thread1 = threading.Thread(target=openTab)
     thread1.start()
 
