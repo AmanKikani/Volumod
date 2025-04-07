@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     st.title("Streamlit STL Examples")
 
-    st.subheader("Look: a flexi squirrel!")
+    st.subheader("Look: Your product!")
     cols = st.columns(5)
     with cols[0]:
         color = st.color_picker("Pick a color", "#FF9900", key='color_file')
