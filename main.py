@@ -1,3 +1,4 @@
+import os
 from pdb import post_mortem
 
 import ollama
@@ -14,6 +15,7 @@ from kittycad.models import (
     TextToCadCreateBody,
 )
 import streamlit.components.v1 as components
+
 
 config = {
         "toImageButtonOptions": {
@@ -325,6 +327,7 @@ def main(speech, mode):
         st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".step")
     print("***END OF CAD DESIGN***")
     st.write("***END OF CAD DESIGN***")
+    os.system("streamlit run testing.py")
 
 def streamChat():
 
