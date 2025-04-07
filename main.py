@@ -1,6 +1,4 @@
 import os
-from pdb import post_mortem
-
 import ollama
 import speech_recognition as sr
 import time
@@ -196,7 +194,7 @@ def createCad(prompt,i):
     # Prompt the API to generate a 3D model from text.
     response = create_text_to_cad.sync(
         client=client,
-        output_format=FileExportFormat.STEP,
+        output_format=FileExportFormat.STL,
         body=TextToCadCreateBody(
             prompt=prompt,
         ),
@@ -240,8 +238,8 @@ def createCad(prompt,i):
             print(f"  * {name}")
 
         # Save the STEP data as text-to-cad-output.step
-        final_result = result.outputs[f"source.step"]
-        with open(f"text-to-cad-output{i}.step", "w", encoding="utf-8") as output_file:
+        final_result = result.outputs[f"source.stl"]
+        with open(f"text-to-cad-output{i}.stl", "w", encoding="utf-8") as output_file:
             output_file.write(final_result.decode("utf-8"))
             print(f"Saved output to {output_file.name}")
 
@@ -328,12 +326,12 @@ def main(speech, mode):
         print("Designing CAD Part " + str(i+1) + ": " + response[i])
         createCad(response[i],i+1)
         print("CAD Part " + str(i+1) + " has been created")
-        st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".step")
+        st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".stl")
     print("***END OF CAD DESIGN***")
     st.write("***END OF CAD DESIGN***")
-    if st.button("Visualize"):
-        thread1 = threading.Thread(target=openTab)
-        thread1.start()
+    thread1 = threading.Thread(target=openTab)
+    thread1.start()
+
 
 def streamChat():
 
