@@ -14,6 +14,7 @@ from kittycad.models import (
     TextToCad,
     TextToCadCreateBody,
 )
+import threading
 import streamlit.components.v1 as components
 
 
@@ -175,6 +176,9 @@ particles_js = """<!DOCTYPE html>
 st.set_page_config(page_title="Volumod.net", page_icon="🔊", layout="wide")
 
 
+def openTab():
+    os.system("streamlit run testing.py")
+
 def callama(prompt):
     response = ollama.chat(
         model='llama3.1:8b',
@@ -327,7 +331,8 @@ def main(speech, mode):
         st.sidebar.write("Cad Part " + str(i+1) + ": /text-to-cad-output" + str(i+1) + ".step")
     print("***END OF CAD DESIGN***")
     st.write("***END OF CAD DESIGN***")
-    os.system("streamlit run testing.py")
+    thread1 = threading.Thread(target=openTab)
+    thread1.start()
 
 def streamChat():
 
